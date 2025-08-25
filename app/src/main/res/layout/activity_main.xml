@@ -127,24 +127,22 @@
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
-                android:src="@drawable/pil"/>
+                android:src="@drawable/pil" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
                 android:background="@drawable/dentist"
-                android:src="@drawable/arrow__4__1"
                 android:scaleType="centerInside"
-                 />
+                android:src="@drawable/arrow__4__1" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
-                android:src="@drawable/nearby_icon"
                 android:scaleType="centerInside"
-                 />
+                android:src="@drawable/nearby_icon" />
 
         </LinearLayout>
 
@@ -155,42 +153,42 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="8dp"
                 android:text="Street View"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="10sp"
                 android:textColor="#868889"
-                android:paddingStart="8dp"/>
+                android:textSize="10sp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="8dp"
                 android:text="Earth View"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="10sp"
                 android:textColor="#868889"
-                android:paddingStart="8dp"/>
+                android:textSize="10sp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_medium"
                 android:text="GPS Navigation"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="10sp"
-                android:textColor="#868889" />
+                android:textColor="#868889"
+                android:textSize="10sp" />
 
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Nearby Places"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="10sp"
+                android:paddingStart="8dp"
+                android:text="Nearby Places"
                 android:textColor="#868889"
-                android:paddingStart="8dp"/>
+                android:textSize="10sp" />
 
         </LinearLayout>
 
@@ -200,20 +198,20 @@
         android:layout_width="330dp"
         android:layout_height="300dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/categories"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/categories">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Advance"
             android:fontFamily="@font/poppins_medium"
-            android:textFontWeight="500"
-            android:textSize="16sp"
+            android:letterSpacing="0.015"
+            android:text="Advance"
             android:textColor="#000000"
-            android:letterSpacing="0.015" />
+            android:textFontWeight="500"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,23 +221,23 @@
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/globe_1"
                 android:background="@drawable/cat1"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/globe_1" />
 
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/flat"
                 android:background="@drawable/cat2"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/flat" />
 
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/panorama_1"
                 android:background="@drawable/cat3"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/panorama_1" />
         </LinearLayout>
 
         <!-- Row 2 -->
@@ -251,27 +249,25 @@
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/panorama_1"
                 android:background="@drawable/cat4"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/panorama_1" />
 
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/group"
                 android:background="@drawable/cat5"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/group" />
 
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="114dp"
-                android:src="@drawable/group__1_"
                 android:background="@drawable/cat6"
-                android:scaleType="center"/>
+                android:scaleType="center"
+                android:src="@drawable/group__1_" />
         </LinearLayout>
     </LinearLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
