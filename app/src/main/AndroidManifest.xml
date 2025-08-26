@@ -16,10 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EarthApp">
 
-        <meta-data
-            android:name="MAPBOX_ACCESS_TOKEN"
-            android:value="pk.eyJ1Ijoic2FmZmEtbm9vcjAwMSIsImEiOiJjbWVzZHhpMGswMWd5MmxzOW4zczU0cmN2In0.HFwgkQiYEQl5kNSmqOXrMw"
-            />
         <activity
             android:name=".LocationSearch"
             android:exported="false" />
