@@ -17,5 +17,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SelectCountryActivity::class.java))
         }
 
+        val searchBox = findViewById<LinearLayout>(R.id.searchbox)
+        searchBox.setOnClickListener {
+            val intent = Intent(this, LocationSearch::class.java)
+            startActivity(intent)
+        }
+
     }
 }

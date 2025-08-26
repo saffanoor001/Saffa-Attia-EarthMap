@@ -65,6 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/top_layout">
 
         <LinearLayout
+            android:id="@+id/searchbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -83,7 +84,10 @@
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:hint="Search Location"
-                android:inputType="text"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:clickable="true"
                 android:padding="0dp"
                 android:textSize="14sp" />
         </LinearLayout>
