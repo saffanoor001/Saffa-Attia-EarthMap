@@ -37,7 +37,7 @@
             android:layout_width="262dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:fontFamily="@font/Poppins_SemiBold"
+            android:fontFamily="@font/poppins_semibold"
             android:includeFontPadding="false"
             android:paddingTop="30dp"
             android:text="Let's Find Your Location"
@@ -252,8 +252,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="World 3D View"
                     android:layout_marginTop="8dp"
+                    android:text="World 3D View"
                     android:textAlignment="center"
                     android:textColor="#868889"
                     android:textSize="12sp" />
@@ -277,9 +277,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Live Web Camera"
                     android:textAlignment="center"
-                    android:layout_marginTop="8dp"
                     android:textColor="#868889"
                     android:textSize="12sp" />
 
@@ -302,9 +302,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="360 Street View"
                     android:textAlignment="center"
-                    android:layout_marginTop="8dp"
                     android:textColor="#868889"
                     android:textSize="12sp" />
 
@@ -335,8 +335,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Traffic Alert"
                     android:layout_marginTop="8dp"
+                    android:text="Traffic Alert"
                     android:textAlignment="center"
                     android:textColor="#868889"
                     android:textSize="12sp" />
@@ -360,8 +360,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Route Finder"
                     android:layout_marginTop="8dp"
+                    android:text="Route Finder"
                     android:textAlignment="center"
                     android:textColor="#868889"
                     android:textSize="12sp" />
@@ -385,8 +385,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Area Calculator"
                     android:layout_marginTop="8dp"
+                    android:text="Area Calculator"
                     android:textAlignment="center"
                     android:textColor="#868889"
                     android:textSize="12sp" />
