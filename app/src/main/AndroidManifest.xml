@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EarthApp">
+
+        <meta-data
+            android:name="MAPBOX_ACCESS_TOKEN"
+            android:value="pk.eyJ1Ijoic2FmZmEtbm9vcjAwMSIsImEiOiJjbWVzZHhpMGswMWd5MmxzOW4zczU0cmN2In0.HFwgkQiYEQl5kNSmqOXrMw"
+            />
+        <activity
+            android:name=".LocationSearch"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
