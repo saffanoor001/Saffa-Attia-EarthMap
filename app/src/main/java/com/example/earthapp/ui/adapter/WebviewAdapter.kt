@@ -21,7 +21,7 @@ class WebviewAdapter(private val items: List<Webview>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebviewViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_webview, parent, false)
+            .inflate(R.layout.item_webviews, parent, false)
         return WebviewViewHolder(view)
     }
 
