@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -15,6 +17,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildFeatures {
+            viewBinding = true
+        }
     }
 
     buildTypes {
@@ -48,6 +54,33 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.mapbox.maps)
+
+    // AndroidX Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Retrofit + Gson
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+
+    // OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
+    // Glide
+    implementation(libs.glide)
+    kapt(libs.glide.compiler)
 
 }
