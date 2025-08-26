@@ -15,6 +15,10 @@
         android:theme="@style/Theme.EarthApp">
 
         <activity
+            android:name=".LocationSearch"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.SelectCountryActivity"
             android:exported="true" />
 

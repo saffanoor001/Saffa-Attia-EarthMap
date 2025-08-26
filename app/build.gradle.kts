@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.legacy.support.v4)
+    implementation (libs.play.services.location)
+    implementation(libs.mapbox.maps)
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)

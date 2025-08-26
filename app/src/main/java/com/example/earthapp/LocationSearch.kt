@@ -1,12 +1,23 @@
 package com.example.earthapp
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
 
 class LocationSearch : AppCompatActivity() {
+
+    private lateinit var mapView: MapView
+    private lateinit var locationClient: FusedLocationProviderClient
+    private val LOCATION_PERMISSION_REQUEST = 1001
+    private lateinit var locationInput: EditText
+//    private var currentStyleUri:
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

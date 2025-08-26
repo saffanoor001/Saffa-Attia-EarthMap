@@ -10,175 +10,250 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/bottomlayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/back"
+        android:layout_width="42dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:elevation="8dp"
+        app:cardCornerRadius="7dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back__1__1" />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="28dp"
+        android:background="@color/white"
+        android:elevation="8dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/pin__2__1" />
+
+            <EditText
+                android:id="@+id/searchlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="Search here"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="380dp"
-        android:background="@drawable/rectangle_34624713"
-        android:orientation="vertical"
+        android:layout_height="300dp"
+        android:background="@drawable/search_bottom_bg"
         app:layout_constraintBottom_toBottomOf="parent">
+
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="85dp"
             android:layout_height="4dp"
-            android:layout_marginStart="137dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/rectangle_34624729" />
+            android:src="@drawable/rectangle_34624729"
+            app:layout_constraintBottom_toTopOf="@+id/linear1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/linear1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/ml"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="My Location"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="120dp"
-                android:text="03:30 PM"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toRightOf="@+id/ml"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/loc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Rawalpindi, DHA 2"
-                android:textSize="10sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ml" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linear"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/linear"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Location"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rawalpindi, DHA2"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:30 P.M"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginHorizontal="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/cvbottom"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear1">
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="82dp"
-                android:layout_marginTop="40dp"
-                android:orientation="horizontal"
-                android:divider="?android:dividerVertical"
-                android:showDividers="middle"
-                android:dividerPadding="100dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loc">
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_34624731"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="82dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rectangle_34624731"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bookmark_1" />
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/bookmark_1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:letterSpacing="0.013"
-                        android:lineHeight="30sp"
-                        android:text="save"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="82dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rectangle_34624731"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/share_1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:letterSpacing="0.013"
-                        android:lineHeight="30sp"
-                        android:text="share"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="82dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rectangle_34624731"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/copy_1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="29dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:letterSpacing="0.013"
-                        android:lineHeight="30sp"
-                        android:text="copy"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="29dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="save"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="295dp"
-                android:layout_height="53dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="82dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_34624731"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/share_1" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="" />
+                    android:layout_height="29dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="share"
+                    android:textSize="12sp" />
 
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="82dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_34624731"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/copy_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="29dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:text="copy"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvbottom"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginHorizontal="28dp"
+            app:cardBackgroundColor="#0291F7"
+            app:cardCornerRadius="11dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Show Nearby Streets"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
