@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="800dp"
+    android:layout_height="match_parent"
     android:background="#F4F5F9"
     tools:context=".MainActivity">
 
@@ -21,13 +21,12 @@
 
         <TextView
             android:id="@+id/text1"
-            android:layout_width="150dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:layout_weight="500"
             android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
-            android:lineHeight="20sp"
-            android:paddingStart="28dp"
             android:paddingTop="20dp"
             android:text="Live Earth Map"
             android:textAlignment="center"
@@ -37,166 +36,189 @@
         <TextView
             android:id="@+id/text2"
             android:layout_width="262dp"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:layout_weight="600"
             android:fontFamily="@font/Poppins_SemiBold"
             android:includeFontPadding="false"
             android:letterSpacing="-0.005"
-            android:lineHeight="40sp"
-            android:paddingStart="28dp"
             android:paddingTop="20dp"
             android:text="Let's Find Your Location"
             android:textColor="#FFFFFF"
             android:textSize="28sp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/search_bar"
-            android:layout_width="315dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:background="#FFFFFF"
-            android:paddingStart="28dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="178dp"
-            android:paddingBottom="16dp"
-            app:cardCornerRadius="64dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/iconly" />
-
-                <EditText
-                    android:layout_width="121dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="275"
-                    android:background="@android:color/transparent"
-                    android:hint="Search Location"
-                    android:inputType="text"
-                    android:padding="0dp"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#FFFFFF"
+        android:paddingStart="28dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="178dp"
+
+        android:paddingBottom="16dp"
+        app:cardCornerRadius="64dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/top_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/iconly" />
+
+            <EditText
+                android:layout_width="121dp"
+                android:layout_height="50dp"
+                android:layout_weight="275"
+                android:background="@android:color/transparent"
+                android:hint="Search Location"
+                android:inputType="text"
+                android:padding="0dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
     <LinearLayout
         android:id="@+id/categories"
-        android:layout_width="330dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_layout">
+        app:layout_constraintTop_toBottomOf="@+id/search_bar">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
             android:fontFamily="@font/poppins_medium"
-            android:letterSpacing="0.015"
-            android:lineHeight="16sp"
             android:text="Categories"
             android:textColor="#000000"
             android:textSize="16sp" />
 
         <LinearLayout
-            android:layout_width="330dp"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/heart"
-                android:scaleType="centerInside"
-                android:src="@drawable/_38___street_view_marker" />
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:src="@drawable/pil" />
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/heart"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/_38___street_view_marker" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:background="@drawable/dentist"
-                android:scaleType="centerInside"
-                android:src="@drawable/arrow__4__1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Street View"
+                    android:textColor="#868889"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:scaleType="centerInside"
-                android:src="@drawable/nearby_icon" />
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/pil" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Earth View"
+                    android:textColor="#868889"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/dentist"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/arrow__4__1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="GPS Navigation"
+                    android:textColor="#868889"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/dentist"
+                    android:backgroundTint="#FFC8AA"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/real_time_tracking_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Nearby Places"
+                    android:textColor="#868889"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="8dp"
-                android:text="Street View"
-                android:textColor="#868889"
-                android:textSize="10sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="8dp"
-                android:text="Earth View"
-                android:textColor="#868889"
-                android:textSize="10sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:text="GPS Navigation"
-                android:textColor="#868889"
-                android:textSize="10sp" />
-
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="8dp"
-                android:text="Nearby Places"
-                android:textColor="#868889"
-                android:textSize="10sp" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="330dp"
-        android:layout_height="300dp"
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -207,10 +229,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:letterSpacing="0.015"
             android:text="Advance"
             android:textColor="#000000"
-            android:textFontWeight="500"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -218,56 +238,162 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat1"
-                android:scaleType="center"
-                android:src="@drawable/globe_1" />
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat2"
-                android:scaleType="center"
-                android:src="@drawable/flat" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat3"
-                android:scaleType="center"
-                android:src="@drawable/panorama_1" />
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/globe_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="World 3D View"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/flat" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Live Web Camera"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/panorama_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="360 Street View"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Row 2 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat4"
-                android:scaleType="center"
-                android:src="@drawable/panorama_1" />
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat5"
-                android:scaleType="center"
-                android:src="@drawable/group" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="114dp"
-                android:background="@drawable/cat6"
-                android:scaleType="center"
-                android:src="@drawable/group__1_" />
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/warning_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Traffic Alert"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/group" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Route Finder"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/main_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:scaleType="center"
+                    android:src="@drawable/group__1_" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Area Calculator"
+                    android:textAlignment="center"
+                    android:textColor="#868889"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
 
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
