@@ -20,4 +20,3 @@ data class ImageObj(
 data class CurrentImage(
     val preview: String? = null
 )
-
