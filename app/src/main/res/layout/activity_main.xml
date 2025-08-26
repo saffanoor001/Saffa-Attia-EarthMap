@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="230dp"
         android:background="@drawable/ellipse_18"
         android:gravity="top"
         android:orientation="vertical"
@@ -24,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_weight="500"
             android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
             android:paddingTop="20dp"
@@ -38,10 +37,8 @@
             android:layout_width="262dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_weight="600"
             android:fontFamily="@font/Poppins_SemiBold"
             android:includeFontPadding="false"
-            android:letterSpacing="-0.005"
             android:paddingTop="20dp"
             android:text="Let's Find Your Location"
             android:textColor="#FFFFFF"
@@ -59,7 +56,6 @@
         android:paddingStart="28dp"
         android:paddingTop="20dp"
         android:paddingEnd="178dp"
-
         android:paddingBottom="16dp"
         app:cardCornerRadius="64dp"
         app:cardElevation="0dp"
@@ -82,9 +78,9 @@
                 android:src="@drawable/iconly" />
 
             <EditText
-                android:layout_width="121dp"
+                android:id="@+id/searchlocation1"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="275"
                 android:background="@android:color/transparent"
                 android:hint="Search Location"
                 android:inputType="text"
