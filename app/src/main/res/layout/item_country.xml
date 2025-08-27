@@ -10,8 +10,8 @@
     android:background="@drawable/bg_country_item">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="109dp"
+        android:layout_height="109dp"
         app:cardCornerRadius="12dp">
         <ImageView
             android:id="@+id/ivFlag"
@@ -24,6 +24,7 @@
         android:id="@+id/tvCountryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
         android:text="Country Name"
         android:textSize="14sp"
         android:textColor="@color/black"
