@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +21,7 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import java.util.Locale
@@ -31,9 +34,7 @@ class LocationSearch : AppCompatActivity() {
     private lateinit var locationInput: EditText
     private var currentStyleUri = Style.MAPBOX_STREETS
 
-    private val pointAnnotationManager by lazy {
-        mapView.annotations.createPointAnnotationManager()
-    }
+    private lateinit var pointAnnotationManager: PointAnnotationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +46,26 @@ class LocationSearch : AppCompatActivity() {
         locationInput = findViewById(R.id.searchlocation)
 
         mapView.getMapboxMap().loadStyleUri(currentStyleUri) {
+            pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
             getCurrentLocation()
         }
 
-        locationInput.setOnClickListener {
-            val locationName = locationInput.text.toString()
-            if (locationName.isNotEmpty()) {
-                searchLocation(locationName)
+
+
+        locationInput.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                try {
+                    val locationName = locationInput.text.toString()
+                    searchLocation(locationName)
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in Done action", e)
+                }
+                true
             } else {
-                Toast.makeText(this, "Enter a Location", Toast.LENGTH_SHORT).show()
+                false
             }
         }
+
     }
 
     private fun searchLocation(locationName: String) {
@@ -87,6 +97,15 @@ class LocationSearch : AppCompatActivity() {
         locationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 moveCameraAndAddMarker(location.latitude, location.longitude)
+            } else {
+                locationClient.getCurrentLocation(
+                    com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY,
+                    null
+                ).addOnSuccessListener { newLocation ->
+                    if (newLocation != null) {
+                        moveCameraAndAddMarker(newLocation.latitude, newLocation.longitude)
+                    }
+                }
             }
         }
     }
@@ -99,16 +118,23 @@ class LocationSearch : AppCompatActivity() {
                 .center(point)
                 .zoom(14.0)
                 .build(),
-            mapAnimationOptions { duration(3000L) }
+            mapAnimationOptions { duration(2000L) }
         )
 
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.your_location__6__1)
+
         pointAnnotationManager.deleteAll()
-        val pointAnnotationOptions = PointAnnotationOptions()
+
+        pointAnnotationManager.addClickListener { annotation ->
+            Toast.makeText(this, "Marker clicked!", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        val options = PointAnnotationOptions()
             .withPoint(point)
             .withIconImage(bitmap)
 
-        pointAnnotationManager.create(pointAnnotationOptions)
+        pointAnnotationManager.create(options)
     }
 
     override fun onRequestPermissionsResult(
