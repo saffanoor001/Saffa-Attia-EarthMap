@@ -2,6 +2,7 @@ package com.example.earthapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.earthapp.ui.SelectCountryActivity
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SelectCountryActivity::class.java))
         }
 
-        val searchBox = findViewById<LinearLayout>(R.id.searchbox)
+        val searchBox = findViewById<EditText>(R.id.searchlocation)
         searchBox.setOnClickListener {
             val intent = Intent(this, LocationSearch::class.java)
             startActivity(intent)

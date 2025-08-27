@@ -52,7 +52,7 @@
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:background="#FFFFFF"
+        app:cardBackgroundColor="@color/white"
         android:paddingStart="28dp"
         android:paddingTop="20dp"
         android:paddingEnd="178dp"
