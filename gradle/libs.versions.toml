@@ -36,6 +36,7 @@ play-services-location = { module = "com.google.android.gms:play-services-locati
 mapbox-maps = { module = "com.mapbox.maps:android", version.ref = "mapbox" }
 
 
+
 # Lifecycle
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
