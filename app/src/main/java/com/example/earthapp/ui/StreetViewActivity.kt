@@ -5,15 +5,12 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.earthapp.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -28,7 +25,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import java.util.Locale
-import kotlin.collections.isNotEmpty
 
 class StreetViewActivity : AppCompatActivity() {
 
@@ -54,16 +50,10 @@ class StreetViewActivity : AppCompatActivity() {
             getCurrentLocation()
         }
 
-
-
         locationInput.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                try {
-                    val locationName = locationInput.text.toString()
-                    searchLocation(locationName)
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Error in Done action", e)
-                }
+                val locationName = locationInput.text.toString()
+                searchLocation(locationName)
                 true
             } else {
                 false
@@ -125,14 +115,9 @@ class StreetViewActivity : AppCompatActivity() {
             mapAnimationOptions { duration(2000L) }
         )
 
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.your_location__6__1)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
 
         pointAnnotationManager.deleteAll()
-
-        pointAnnotationManager.addClickListener { annotation ->
-            Toast.makeText(this, "Marker clicked!", Toast.LENGTH_SHORT).show()
-            true
-        }
 
         val options = PointAnnotationOptions()
             .withPoint(point)
