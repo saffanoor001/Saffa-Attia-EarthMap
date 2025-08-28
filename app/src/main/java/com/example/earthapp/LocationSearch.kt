@@ -1,7 +1,9 @@
 package com.example.earthapp
 
 import android.Manifest
-import android.content.Context
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Geocoder
@@ -10,7 +12,11 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -29,10 +35,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class LocationSearch : AppCompatActivity() {
-
+    private lateinit var saveBtn: LinearLayout
+    private lateinit var shareBtn: LinearLayout
+    private lateinit var copyBtn: LinearLayout
+    private lateinit var time: TextView
+    private lateinit var locationText: TextView
     private lateinit var mapView: MapView
     private lateinit var locationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST = 1001
@@ -41,27 +53,82 @@ class LocationSearch : AppCompatActivity() {
     private var pointAnnotationManager: PointAnnotationManager? = null
     private var isStyleLoaded = false
 
+    private val resolutionForResult =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                getCurrentLocation()
+            } else {
+                Toast.makeText(this, "GPS is required to get current location", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_search)
         initializeViews()
         setupMap()
         setupSearchListener()
+
+        shareBtn.setOnClickListener {
+            val textToShare = locationText.text.toString()
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, textToShare)
+            }
+            startActivity(Intent.createChooser(shareIntent, "Share via"))
+        }
+
+        copyBtn.setOnClickListener {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Location", locationText.text.toString())
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_SHORT).show()
+        }
+
+        val backButton = findViewById<LinearLayout>(R.id.backk)
+        backButton.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun initializeViews() {
         mapView = findViewById(R.id.mapView)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationInput = findViewById(R.id.searchlocation)
+        saveBtn = findViewById(R.id.savebtn)
+        shareBtn = findViewById(R.id.sharebtn)
+        copyBtn = findViewById(R.id.copybtn)
+        time = findViewById(R.id.time)
+        locationText = findViewById(R.id.locationtext)
     }
 
     private fun setupMap() {
-        mapView.getMapboxMap().loadStyleUri(currentStyleUri) { style ->
+        mapView.mapboxMap.loadStyle(currentStyleUri) { style ->
             pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
             isStyleLoaded = true
-            Log.d("LocationSearch", "Map style loaded and annotation manager created")
             getCurrentLocation()
         }
+    }
+
+
+    private fun getAddressFromLocation(lat: Double, lon: Double) {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses = geocoder.getFromLocation(lat, lon, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val address = addresses[0].getAddressLine(0)
+                locationText.text = address
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun updateCurrentTime() {
+        val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+        time.text = currentTime
     }
 
     private fun setupSearchListener() {
@@ -82,17 +149,13 @@ class LocationSearch : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         currentFocus?.let {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 
     private fun getCurrentLocation() {
-        if (!isStyleLoaded) {
-            Log.w("LocationSearch", "Style not loaded yet, skipping location request")
-            return
-        }
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -114,8 +177,7 @@ class LocationSearch : AppCompatActivity() {
         val builder = com.google.android.gms.location.LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
 
-        val settingsClient =
-            com.google.android.gms.location.LocationServices.getSettingsClient(this)
+        val settingsClient = LocationServices.getSettingsClient(this)
         val task = settingsClient.checkLocationSettings(builder.build())
 
         task.addOnSuccessListener {
@@ -128,21 +190,23 @@ class LocationSearch : AppCompatActivity() {
                     val lon = location.longitude
                     val userLocation = Point.fromLngLat(lon, lat)
                     moveCameraToLocation(userLocation)
-                    addMarker(userLocation, "Current Location")
+                    addMarker(userLocation)
+                    getAddressFromLocation(lat, lon)
+                    updateCurrentTime()
+
                 } else {
                     Toast.makeText(this, "Unable to get current location", Toast.LENGTH_SHORT)
                         .show()
                 }
-            }.addOnFailureListener { e ->
-                Toast.makeText(this, "Error getting location: ${e.message}", Toast.LENGTH_SHORT)
-                    .show()
             }
         }
 
         task.addOnFailureListener { exception ->
             if (exception is com.google.android.gms.common.api.ResolvableApiException) {
                 try {
-                    exception.startResolutionForResult(this, 1002)
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    resolutionForResult.launch(intentSenderRequest)
                 } catch (sendEx: Exception) {
                     Log.e("LocationSearch", "Error showing location settings dialog", sendEx)
                 }
@@ -150,6 +214,8 @@ class LocationSearch : AppCompatActivity() {
                 Toast.makeText(this, "Location services unavailable", Toast.LENGTH_SHORT).show()
             }
         }
+
+
     }
 
     private fun searchLocation(locationName: String) {
@@ -159,21 +225,34 @@ class LocationSearch : AppCompatActivity() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val geocoder = Geocoder(this@LocationSearch, Locale.getDefault())
-            val addresses = geocoder.getFromLocationName(locationName, 1)
+            try {
+                val geocoder = Geocoder(this@LocationSearch, Locale.getDefault())
+                val addresses = geocoder.getFromLocationName(locationName, 1)
 
-            withContext(Dispatchers.Main) {
-                if (!addresses.isNullOrEmpty()) {
-                    val address = addresses[0]
-                    val lat = address.latitude
-                    val lon = address.longitude
-                    val searchedPoint = Point.fromLngLat(lon, lat)
-                    moveCameraToLocation(searchedPoint)
-                    addMarker(searchedPoint, locationName)
-                } else {
+                withContext(Dispatchers.Main) {
+                    if (!addresses.isNullOrEmpty()) {
+                        val address = addresses[0]
+                        val lat = address.latitude
+                        val lon = address.longitude
+                        val searchedPoint = Point.fromLngLat(lon, lat)
+                        moveCameraToLocation(searchedPoint)
+                        addMarker(searchedPoint)
+                        getAddressFromLocation(lat, lon)
+                        updateCurrentTime()
+                    } else {
+                        Toast.makeText(
+                            this@LocationSearch,
+                            "Location not found",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("LocationSearch", "Error in geocoding", e)
+                withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@LocationSearch,
-                        "Location not found",
+                        "Search error: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -182,7 +261,7 @@ class LocationSearch : AppCompatActivity() {
     }
 
     private fun moveCameraToLocation(point: Point) {
-        mapView.getMapboxMap().flyTo(
+        mapView.mapboxMap.flyTo(
             CameraOptions.Builder()
                 .center(point)
                 .zoom(15.0)
@@ -191,18 +270,9 @@ class LocationSearch : AppCompatActivity() {
         )
     }
 
-    private fun addMarker(point: Point, title: String) {
-        if (pointAnnotationManager == null) {
-            Log.e("LocationSearch", "PointAnnotationManager is null")
-            pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
-        }
+    private fun addMarker(point: Point) {
 
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
-        if (bitmap == null) {
-            Log.e("LocationSearch", "Failed to decode marker bitmap")
-            Toast.makeText(this, "Marker image not found", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         val markerOptions = PointAnnotationOptions()
             .withPoint(point)
@@ -211,7 +281,6 @@ class LocationSearch : AppCompatActivity() {
         pointAnnotationManager?.let { manager ->
             manager.deleteAll()
             manager.create(markerOptions)
-            Log.d("LocationSearch", "Marker added at: $point")
         }
     }
 
@@ -229,10 +298,5 @@ class LocationSearch : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        pointAnnotationManager?.deleteAll()
     }
 }

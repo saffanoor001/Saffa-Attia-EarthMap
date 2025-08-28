@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/backk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
@@ -123,17 +124,17 @@
                     />
 
                 <TextView
+                    android:id="@+id/locationtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rawalpindi, DHA2"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="10sp"/>
             </LinearLayout>
 
             <TextView
+                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3:30 P.M"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="18sp"/>
 
@@ -151,6 +152,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linear1">
 
             <LinearLayout
+                android:id="@+id/savebtn"
                 android:layout_width="0dp"
                 android:layout_height="82dp"
                 android:layout_weight="1"
@@ -174,6 +176,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/sharebtn"
                 android:layout_width="0dp"
                 android:layout_height="82dp"
                 android:layout_marginLeft="5dp"
@@ -199,6 +202,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/copybtn"
                 android:layout_width="0dp"
                 android:layout_height="82dp"
                 android:layout_weight="1"
