@@ -219,10 +219,6 @@ class LocationSearch : AppCompatActivity() {
     }
 
     private fun searchLocation(locationName: String) {
-        if (!isStyleLoaded) {
-            Toast.makeText(this, "Map is still loading, please wait", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
