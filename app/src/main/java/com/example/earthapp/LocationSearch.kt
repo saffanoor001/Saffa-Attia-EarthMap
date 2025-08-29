@@ -11,19 +11,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.earthapp.databinding.ActivityLocationSearchBinding
+import com.example.earthapp.utils.LocationPrecision
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
@@ -40,19 +38,14 @@ import java.util.Date
 import java.util.Locale
 
 class LocationSearch : AppCompatActivity() {
-    private lateinit var saveBtn: LinearLayout
-    private lateinit var shareBtn: LinearLayout
-    private lateinit var copyBtn: LinearLayout
-    private lateinit var time: TextView
-    private lateinit var locationText: TextView
-    private lateinit var mapView: MapView
+
+    private val binding: ActivityLocationSearchBinding by lazy {
+        ActivityLocationSearchBinding.inflate(layoutInflater)
+    }
     private lateinit var locationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST = 1001
-    private lateinit var locationInput: EditText
-    private var currentStyleUri = Style.MAPBOX_STREETS
-    private var pointAnnotationManager: PointAnnotationManager? = null
+    private lateinit var pointAnnotationManager: PointAnnotationManager
     private var isStyleLoaded = false
-
     private val resolutionForResult =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -63,16 +56,15 @@ class LocationSearch : AppCompatActivity() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location_search)
-        initializeViews()
+        setContentView(binding.root)
+        locationClient = LocationServices.getFusedLocationProviderClient(this)
         setupMap()
         setupSearchListener()
 
-        shareBtn.setOnClickListener {
-            val textToShare = locationText.text.toString()
+        binding.sharebtn.setOnClickListener {
+            val textToShare = binding.locationtext.text.toString()
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, textToShare)
@@ -80,33 +72,33 @@ class LocationSearch : AppCompatActivity() {
             startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
 
-        copyBtn.setOnClickListener {
+        binding.copybtn.setOnClickListener {
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("Location", locationText.text.toString())
+            val clip = ClipData.newPlainText("Location", binding.locationtext.text.toString())
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_SHORT).show()
         }
 
-        val backButton = findViewById<LinearLayout>(R.id.backk)
-        backButton.setOnClickListener {
+        binding.backk.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.precisionIcon.setOnClickListener {
+            LocationPrecision.recenterToUserLocation(
+                this,
+                binding.mapView.mapboxMap,
+                locationClient
+            ) { point ->
+                addMarker(point)
+                getAddressFromLocation(point.latitude(), point.longitude())
+                updateCurrentTime()
+            }
         }
     }
 
-    private fun initializeViews() {
-        mapView = findViewById(R.id.mapView)
-        locationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationInput = findViewById(R.id.searchlocation)
-        saveBtn = findViewById(R.id.savebtn)
-        shareBtn = findViewById(R.id.sharebtn)
-        copyBtn = findViewById(R.id.copybtn)
-        time = findViewById(R.id.time)
-        locationText = findViewById(R.id.locationtext)
-    }
-
     private fun setupMap() {
-        mapView.mapboxMap.loadStyle(currentStyleUri) { style ->
-            pointAnnotationManager = mapView.annotations.createPointAnnotationManager()
+        binding.mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS) { style ->
+            pointAnnotationManager = binding.mapView.annotations.createPointAnnotationManager()
             isStyleLoaded = true
             getCurrentLocation()
         }
@@ -119,7 +111,7 @@ class LocationSearch : AppCompatActivity() {
             val addresses = geocoder.getFromLocation(lat, lon, 1)
             if (!addresses.isNullOrEmpty()) {
                 val address = addresses[0].getAddressLine(0)
-                locationText.text = address
+                binding.locationtext.text = address
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -128,14 +120,14 @@ class LocationSearch : AppCompatActivity() {
 
     private fun updateCurrentTime() {
         val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
-        time.text = currentTime
+        binding.time.text = currentTime
     }
 
     private fun setupSearchListener() {
-        locationInput.setOnEditorActionListener { v, actionId, event ->
+        binding.searchlocation.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
-                val locationName = locationInput.text.toString().trim()
+                val locationName = binding.searchlocation.text.toString().trim()
                 if (locationName.isNotEmpty()) {
                     searchLocation(locationName)
                 } else {
@@ -214,8 +206,6 @@ class LocationSearch : AppCompatActivity() {
                 Toast.makeText(this, "Location services unavailable", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
     private fun searchLocation(locationName: String) {
@@ -257,7 +247,7 @@ class LocationSearch : AppCompatActivity() {
     }
 
     private fun moveCameraToLocation(point: Point) {
-        mapView.mapboxMap.flyTo(
+        binding.mapView.mapboxMap.flyTo(
             CameraOptions.Builder()
                 .center(point)
                 .zoom(15.0)
@@ -274,7 +264,7 @@ class LocationSearch : AppCompatActivity() {
             .withPoint(point)
             .withIconImage(bitmap)
 
-        pointAnnotationManager?.let { manager ->
+        pointAnnotationManager.let { manager ->
             manager.deleteAll()
             manager.create(markerOptions)
         }
