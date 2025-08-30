@@ -13,18 +13,15 @@ import com.example.earthapp.model.Webview
 
 class WebviewAdapter(private val items: List<Webview>) :
     RecyclerView.Adapter<WebviewAdapter.WebviewViewHolder>() {
-
     inner class WebviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.text)
         val card: CardView = itemView.findViewById(R.id.webViewLayout)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebviewViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_webviews, parent, false)
         return WebviewViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: WebviewViewHolder, position: Int) {
         val item = items[position]
         holder.title.text = item.title
@@ -37,6 +34,5 @@ class WebviewAdapter(private val items: List<Webview>) :
             context.startActivity(intent)
         }
     }
-
     override fun getItemCount(): Int = items.size
 }

@@ -38,6 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -83,5 +86,10 @@ dependencies {
     // Glide
     implementation(libs.glide)
     kapt(libs.glide.compiler)
+
+    //Jsoup
+    implementation(libs.jsoup)
+    //Circle Indicator
+    implementation(libs.circleindicator)
 
 }
