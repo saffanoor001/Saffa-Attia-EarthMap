@@ -26,7 +26,7 @@ class PlacesAdapter(
         val place = places[position]
         holder.binding.placeName.text = place.name
         holder.binding.placeAddress.text = place.location.formatted_address
-        holder.binding.placeDistance.text = "${place.distance}"
+        holder.binding.placeDistance.text = "${place.distance} m"
     }
 
     override fun getItemCount(): Int = places.size

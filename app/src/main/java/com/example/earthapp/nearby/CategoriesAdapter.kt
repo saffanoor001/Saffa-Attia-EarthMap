@@ -12,16 +12,7 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(val binding: ItemCategoryBinding) :
-        RecyclerView.ViewHolder(binding.root){
-            init {
-                binding.root.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION){
-                        onCategoryClick(categories[position])
-                    }
-                }
-            }
-        }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding = ItemCategoryBinding.inflate(
@@ -34,8 +25,13 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categories[position]
-        holder.binding.categoryName.text = category.categoryName
-        holder.binding.categoryImage.setImageResource(category.resId)
+        holder.binding.apply {
+            categoryName.text = category.categoryName
+            categoryImage.setImageResource(category.resId)
+            root.setOnClickListener {
+                onCategoryClick(category)
+            }
+        }
     }
 
     override fun getItemCount(): Int = categories.size

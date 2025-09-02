@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.earthapp.databinding.ActivityNearbyPlacesResultBinding
 import com.example.earthapp.nearby.api.PlacesApiInstance
@@ -37,14 +38,26 @@ class NearbyPlacesResult : AppCompatActivity() {
             }
         }
 
+    private var categoryId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         binding.rvPlaces.layoutManager = LinearLayoutManager(this)
-
         locationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        // Get category ID from Intent
+        categoryId = intent.getStringExtra("selectedCategoryId")
+        if (categoryId.isNullOrEmpty()) {
+            Toast.makeText(this, "No category selected", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        Log.d("NearbyPlacesResult", "Selected category ID: $categoryId")
+
+        // Fetch location and nearby places
         fetchLocationAndPlaces()
     }
 
@@ -55,18 +68,19 @@ class NearbyPlacesResult : AppCompatActivity() {
             resolutionForResult = resolutionLauncher
         ) { point: Point ->
             val latLong = "${point.latitude()},${point.longitude()}"
-            val categoryId = intent.getStringExtra("CATEGORY_ID") ?: "13034"
-            fetchNearbyPlaces(latLong, categoryId)
+            Log.d("NearbyPlacesResult", "Current location: $latLong")
+            fetchNearbyPlaces(latLong, categoryId!!)
         }
     }
 
     private fun fetchNearbyPlaces(latLong: String, categoryId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
+                Log.d("NearbyPlacesResult", "Fetching places for latLong=$latLong, categoryId=$categoryId")
                 val response = PlacesApiInstance.api.searchPlaces(
                     latLong = latLong,
-                    radius = 1000,
-                    categories = categoryId,
+                    radius = 2000,
+                    categoryId = categoryId,
                     limit = 20
                 )
 
@@ -79,7 +93,7 @@ class NearbyPlacesResult : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this@NearbyPlacesResult,
-                                "No places found",
+                                "No places found in this category",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
