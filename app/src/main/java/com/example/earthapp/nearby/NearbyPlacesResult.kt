@@ -1,7 +1,6 @@
 package com.example.earthapp.nearby
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
@@ -15,7 +14,11 @@ import com.example.earthapp.utils.GetCurrentLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
-import kotlinx.coroutines.CoroutineScope
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.locationcomponent.location
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,6 +31,7 @@ class NearbyPlacesResult : AppCompatActivity() {
 
     private lateinit var adapter: PlacesAdapter
     private lateinit var locationClient: FusedLocationProviderClient
+    private var isStyleLoaded = false
 
     private val resolutionLauncher: ActivityResultLauncher<IntentSenderRequest> =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
@@ -39,26 +43,39 @@ class NearbyPlacesResult : AppCompatActivity() {
         }
 
     private var categoryId: String? = null
+    private var categoryName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.rvPlaces.layoutManager = LinearLayoutManager(this)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Get category ID from Intent
         categoryId = intent.getStringExtra("selectedCategoryId")
         if (categoryId.isNullOrEmpty()) {
             Toast.makeText(this, "No category selected", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
+        categoryName = intent.getStringExtra("selectedCategoryName")
 
-        Log.d("NearbyPlacesResult", "Selected category ID: $categoryId")
+        binding.categoryName.text = categoryName
+        binding.rvPlaces.layoutManager = LinearLayoutManager(this)
+        binding.backk.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-        // Fetch location and nearby places
-        fetchLocationAndPlaces()
+        setupMap()
+    }
+
+    private fun setupMap() {
+        binding.mapView.mapboxMap.loadStyleUri(Style.MAPBOX_STREETS) { style ->
+            val locationComponent = binding.mapView.location
+            locationComponent.updateSettings {
+                enabled = true
+                pulsingEnabled = true
+            }
+            isStyleLoaded = true
+            fetchLocationAndPlaces()
+        }
     }
 
     private fun fetchLocationAndPlaces() {
@@ -68,28 +85,31 @@ class NearbyPlacesResult : AppCompatActivity() {
             resolutionForResult = resolutionLauncher
         ) { point: Point ->
             val latLong = "${point.latitude()},${point.longitude()}"
-            Log.d("NearbyPlacesResult", "Current location: $latLong")
-            fetchNearbyPlaces(latLong, categoryId!!)
+            moveCameraToLocation(point)
+            fetchNearbyPlaces(latLong, categoryName!!)
         }
     }
 
-    private fun fetchNearbyPlaces(latLong: String, categoryId: String) {
+    private fun fetchNearbyPlaces(latLong: String,categoryName: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                Log.d("NearbyPlacesResult", "Fetching places for latLong=$latLong, categoryId=$categoryId")
                 val response = PlacesApiInstance.api.searchPlaces(
-                    latLong = latLong,
-                    radius = 2000,
-                    categoryId = categoryId,
-                    limit = 20
+                    latLong = "40.7580,-73.9855", // TODO: will use latLong here later
+                    radius = 5000,
+                    query = categoryName,
+                    limit = 10
                 )
-
-                withContext(Dispatchers.Main) {
+                withContext(
+                    Dispatchers.Main
+                ) {
                     if (response.isSuccessful) {
-                        val places = response.body()?.results ?: emptyList()
+                        val placesResponse = response.body()
+                        val places = placesResponse?.results ?: emptyList()
+
                         if (places.isNotEmpty()) {
                             adapter = PlacesAdapter(places)
                             binding.rvPlaces.adapter = adapter
+                            //TODO: Add markers for these places on the map like in google maps
                         } else {
                             Toast.makeText(
                                 this@NearbyPlacesResult,
@@ -97,12 +117,6 @@ class NearbyPlacesResult : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    } else {
-                        Toast.makeText(
-                            this@NearbyPlacesResult,
-                            "API Error: ${response.code()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
             } catch (e: Exception) {
@@ -112,9 +126,18 @@ class NearbyPlacesResult : AppCompatActivity() {
                         "Request failed: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e("NearbyPlacesResult", "Error fetching places", e)
                 }
             }
         }
+    }
+
+    private fun moveCameraToLocation(point: Point) {
+        binding.mapView.mapboxMap.flyTo(
+            CameraOptions.Builder()
+                .center(point)
+                .zoom(15.0)
+                .build(),
+            MapAnimationOptions.mapAnimationOptions { duration(3000) }
+        )
     }
 }

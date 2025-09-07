@@ -36,7 +36,8 @@ object GetCurrentLocation {
         }
 
         val locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 1000
+            Priority.PRIORITY_HIGH_ACCURACY,
+            1000
         ).build()
 
         val builder = LocationSettingsRequest.Builder()
@@ -46,13 +47,24 @@ object GetCurrentLocation {
         val task = settingsClient.checkLocationSettings(builder.build())
 
         task.addOnSuccessListener {
+            locationClient.lastLocation.addOnSuccessListener { lastLoc ->
+                if (lastLoc != null) {
+                    val point = Point.fromLngLat(lastLoc.longitude, lastLoc.latitude)
+                    onLocationReceived(point)
+                }
+            }
+
             locationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener { location ->
                     if (location != null) {
                         val point = Point.fromLngLat(location.longitude, location.latitude)
                         onLocationReceived(point)
                     } else {
-                        Toast.makeText(activity, "Unable to get current location", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            activity,
+                            "Unable to get current location",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
         }
@@ -60,7 +72,8 @@ object GetCurrentLocation {
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
                 try {
-                    val intentSenderRequest = IntentSenderRequest.Builder(exception.resolution).build()
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
                     resolutionForResult.launch(intentSenderRequest)
                 } catch (sendEx: Exception) {
                     Log.e("GetCurrentLocation", "Error showing location settings dialog", sendEx)

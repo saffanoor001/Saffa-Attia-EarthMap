@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="28dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/placeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place Name"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/placeAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place Address"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray" />
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/placeDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="500m away"
-        android:textSize="12sp"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="12sp" />
 
 </LinearLayout>
