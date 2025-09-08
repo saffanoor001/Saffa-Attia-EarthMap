@@ -38,6 +38,9 @@
             android:name=".ui.WebViewActivity"
             android:exported="true" />
         <activity
+            android:name=".ui.MapStylesActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
