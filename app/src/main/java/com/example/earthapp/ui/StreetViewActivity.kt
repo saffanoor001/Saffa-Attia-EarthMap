@@ -32,7 +32,6 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import com.mapbox.maps.plugin.locationcomponent.location
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,28 +58,29 @@ class StreetViewActivity : AppCompatActivity() {
                     .show()
             }
         }
+
     //style code
     private val stylePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val selectedStyleUri = result.data?.getStringExtra("SELECTED_STYLE_URI")
                 if (!selectedStyleUri.isNullOrEmpty()) {
-                    // Apply the style on the Mapbox map
+
                     binding.mapView.mapboxMap.loadStyleUri(selectedStyleUri) {
-                        // optional: remember that a style is loaded
+
                         isStyleLoaded = true
-                        // optional: re-create annotation manager if needed
+
                         pointAnnotationManager = binding.mapView.annotations.createPointAnnotationManager()
                     }
                 }
             }
         }
 
-    // ViewPager2 / Indicator / Auto scroll
+
     private lateinit var adapter: StreetImageAdapter
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
-    private val autoScrollDelay = 5000L // 5 seconds
+    private val autoScrollDelay = 5000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,16 +111,16 @@ class StreetViewActivity : AppCompatActivity() {
         adapter = StreetImageAdapter(emptyList())
         binding.viewPagerStreet.adapter = adapter
         binding.circleIndicator.setViewPager(binding.viewPagerStreet)
-        // default image
+
         loadImagesForLocation("street view new york")
 
-        // MapStylesActivity when stylesButton clicked
+
         binding.stylesButton.setOnClickListener {
-            // disable rapid double clicks optionally
+
             binding.stylesButton.isEnabled = false
             val intent = Intent(this, MapStylesActivity::class.java)
             stylePickerLauncher.launch(intent)
-            // re-enable after short delay to avoid accidental multiple launches (optional)
+
             handler.postDelayed({ binding.stylesButton.isEnabled = true }, 500)
         }
 
@@ -138,7 +138,7 @@ class StreetViewActivity : AppCompatActivity() {
             val addresses = geocoder.getFromLocation(lat, lon, 1)
             if (!addresses.isNullOrEmpty()) {
                 val address = addresses[0].getAddressLine(0)
-                // (You can display this if you want)
+
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -350,7 +350,7 @@ class StreetViewActivity : AppCompatActivity() {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
     }
-    // Auto-scroll ViewPager2
+
     private fun startAutoScroll(itemCount: Int) {
         runnable?.let { handler.removeCallbacks(it) }
         runnable = object : Runnable {
