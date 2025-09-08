@@ -1,6 +1,5 @@
 package com.example.earthapp
 
-import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
@@ -12,11 +11,10 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.earthapp.databinding.ActivityLocationSearchBinding
+import com.example.earthapp.utils.GetCurrentLocation
 import com.example.earthapp.utils.LocationPrecision
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -43,7 +41,6 @@ class LocationSearch : AppCompatActivity() {
         ActivityLocationSearchBinding.inflate(layoutInflater)
     }
     private lateinit var locationClient: FusedLocationProviderClient
-    private val LOCATION_PERMISSION_REQUEST = 1001
     private lateinit var pointAnnotationManager: PointAnnotationManager
     private var isStyleLoaded = false
     private val resolutionForResult =
@@ -104,6 +101,18 @@ class LocationSearch : AppCompatActivity() {
         }
     }
 
+    private fun getCurrentLocation() {
+        GetCurrentLocation.fetch(
+            this,
+            locationClient,
+            resolutionForResult
+        ) { point ->
+            moveCameraToLocation(point)
+            addMarker(point)
+            getAddressFromLocation(point.latitude(), point.longitude())
+            updateCurrentTime()
+        }
+    }
 
     private fun getAddressFromLocation(lat: Double, lon: Double) {
         val geocoder = Geocoder(this, Locale.getDefault())
@@ -147,69 +156,7 @@ class LocationSearch : AppCompatActivity() {
         }
     }
 
-    private fun getCurrentLocation() {
-
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST
-            )
-            return
-        }
-
-        val locationRequest = com.google.android.gms.location.LocationRequest.Builder(
-            com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, 1000
-        ).build()
-
-        val builder = com.google.android.gms.location.LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-
-        val settingsClient = LocationServices.getSettingsClient(this)
-        val task = settingsClient.checkLocationSettings(builder.build())
-
-        task.addOnSuccessListener {
-            locationClient.getCurrentLocation(
-                com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY,
-                null
-            ).addOnSuccessListener { location ->
-                if (location != null) {
-                    val lat = location.latitude
-                    val lon = location.longitude
-                    val userLocation = Point.fromLngLat(lon, lat)
-                    moveCameraToLocation(userLocation)
-                    addMarker(userLocation)
-                    getAddressFromLocation(lat, lon)
-                    updateCurrentTime()
-
-                } else {
-                    Toast.makeText(this, "Unable to get current location", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is com.google.android.gms.common.api.ResolvableApiException) {
-                try {
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(exception.resolution).build()
-                    resolutionForResult.launch(intentSenderRequest)
-                } catch (sendEx: Exception) {
-                    Log.e("LocationSearch", "Error showing location settings dialog", sendEx)
-                }
-            } else {
-                Toast.makeText(this, "Location services unavailable", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun searchLocation(locationName: String) {
-
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val geocoder = Geocoder(this@LocationSearch, Locale.getDefault())
@@ -257,9 +204,7 @@ class LocationSearch : AppCompatActivity() {
     }
 
     private fun addMarker(point: Point) {
-
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
-
         val markerOptions = PointAnnotationOptions()
             .withPoint(point)
             .withIconImage(bitmap)
@@ -276,7 +221,7 @@ class LocationSearch : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST &&
+        if (requestCode == 1001 &&
             grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED
         ) {

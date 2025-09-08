@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.earthapp.databinding.ActivityMainBinding
+import com.example.earthapp.nearby.NearbyPlaces
 import com.example.earthapp.ui.SelectCountryActivity
 import com.example.earthapp.ui.StreetViewActivity
 
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.streetView.setOnClickListener {
             startActivity(Intent(this, StreetViewActivity::class.java))
+        }
+
+        binding.nearbyplaces.setOnClickListener {
+            startActivity(Intent(this, NearbyPlaces::class.java))
         }
 
     }

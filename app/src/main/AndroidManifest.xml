@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EarthApp">
         <activity
+            android:name=".nearby.NearbyPlacesResult"
+            android:exported="false" />
+        <activity
+            android:name=".nearby.NearbyPlaces"
+            android:exported="false" />
+        <activity
             android:name=".ui.StreetViewActivity"
             android:exported="false" />
         <activity
