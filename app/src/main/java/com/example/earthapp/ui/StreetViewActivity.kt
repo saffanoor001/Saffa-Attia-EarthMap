@@ -1,6 +1,7 @@
 package com.example.earthapp.ui
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Geocoder
@@ -37,6 +38,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import android.content.Intent
+
 
 class StreetViewActivity : AppCompatActivity() {
 
@@ -54,6 +57,22 @@ class StreetViewActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "GPS is required to get current location", Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+    //style code
+    private val stylePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val selectedStyleUri = result.data?.getStringExtra("SELECTED_STYLE_URI")
+                if (!selectedStyleUri.isNullOrEmpty()) {
+                    // Apply the style on the Mapbox map
+                    binding.mapView.mapboxMap.loadStyleUri(selectedStyleUri) {
+                        // optional: remember that a style is loaded
+                        isStyleLoaded = true
+                        // optional: re-create annotation manager if needed
+                        pointAnnotationManager = binding.mapView.annotations.createPointAnnotationManager()
+                    }
+                }
             }
         }
 
@@ -94,6 +113,17 @@ class StreetViewActivity : AppCompatActivity() {
         binding.circleIndicator.setViewPager(binding.viewPagerStreet)
         // default image
         loadImagesForLocation("street view new york")
+
+        // MapStylesActivity when stylesButton clicked
+        binding.stylesButton.setOnClickListener {
+            // disable rapid double clicks optionally
+            binding.stylesButton.isEnabled = false
+            val intent = Intent(this, MapStylesActivity::class.java)
+            stylePickerLauncher.launch(intent)
+            // re-enable after short delay to avoid accidental multiple launches (optional)
+            handler.postDelayed({ binding.stylesButton.isEnabled = true }, 500)
+        }
+
     }
     private fun setupMap() {
         binding.mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS) {
@@ -353,5 +383,3 @@ class StreetViewActivity : AppCompatActivity() {
         }
     }
 }
-
-
