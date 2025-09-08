@@ -2,5 +2,6 @@
     <string name="app_name">EarthApp</string>
     <string name="webcam_thumb">Webcam thumbnail</string>
     <string name="country_flag">Country flag</string>
+    <string name="map_style">Map Styles</string>
     <string name="loading">Loading....</string>
 </resources>

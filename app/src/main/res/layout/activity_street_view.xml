@@ -83,7 +83,7 @@ android:layout_height="match_parent">
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/icon1"
+        android:id="@+id/stylesButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="28dp"
@@ -101,7 +101,7 @@ android:layout_height="match_parent">
 
             <ImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_height="match_parent"
                 android:src="@drawable/layers_1" />
 
         </LinearLayout>
@@ -118,7 +118,7 @@ android:layout_height="match_parent">
         app:cardElevation="10dp"
         app:layout_constraintBottom_toTopOf="@id/clbottom"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon1">
+        app:layout_constraintTop_toBottomOf="@+id/stylesButton">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -127,8 +127,8 @@ android:layout_height="match_parent">
             android:gravity="center">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
                 android:src="@drawable/precision_1" />
 
         </LinearLayout>

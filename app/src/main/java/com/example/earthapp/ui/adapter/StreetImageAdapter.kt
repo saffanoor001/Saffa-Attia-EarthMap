@@ -35,4 +35,3 @@ class StreetImageAdapter(private var images: List<String>) :
         notifyDataSetChanged()
     }
 }
-
