@@ -22,7 +22,7 @@ class MapStylesActivity : AppCompatActivity() {
         binding = ActivityMapStylesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvStyles.layoutManager = GridLayoutManager(this, 2)
+        binding.rvStyles.layoutManager = GridLayoutManager(this, 3)
         adapter = MapStylesAdapter(getMapStyles()) { selectedStyle ->
 
             val resultIntent = Intent()
