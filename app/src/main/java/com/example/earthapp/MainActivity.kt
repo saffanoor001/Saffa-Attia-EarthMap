@@ -36,5 +36,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, NearbyPlaces::class.java))
         }
 
+        binding.world3D.setOnClickListener {
+            startActivity(Intent(this, GlobeActivity::class.java ))
+        }
+
     }
 }

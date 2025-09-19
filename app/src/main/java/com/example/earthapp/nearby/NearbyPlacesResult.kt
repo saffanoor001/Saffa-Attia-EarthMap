@@ -94,7 +94,7 @@ class NearbyPlacesResult : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response = PlacesApiInstance.api.searchPlaces(
-                    latLong = "40.7580,-73.9855", // TODO: will use latLong here later
+                    latLong = latLong,
                     radius = 5000,
                     query = categoryName,
                     limit = 10

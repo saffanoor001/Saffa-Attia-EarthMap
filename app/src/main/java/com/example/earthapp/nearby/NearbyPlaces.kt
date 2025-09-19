@@ -115,13 +115,13 @@ class NearbyPlaces : AppCompatActivity() {
                 binding.mapView.mapboxMap.setCamera(
                     CameraOptions.Builder()
                         .center(point)
-                        .zoom(17.0)
+                        .zoom(15.0)
                         .bearing(0.0)
                         .pitch(0.0)
                         .build()
                 )
-                binding.mapView.gestures.focalPoint =
-                    binding.mapView.mapboxMap.pixelForCoordinate(point)
+//                binding.mapView.gestures.focalPoint =
+//                    binding.mapView.mapboxMap.pixelForCoordinate(point)
             }
 
             locationComponent.addOnIndicatorBearingChangedListener { bearing: Double ->
